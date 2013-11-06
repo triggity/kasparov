@@ -1,0 +1,157 @@
+<?
+include "config.php";
+include "database.php";
+include "functions.php";
+
+$title = "Help Desk Main";
+
+include "login.php";
+
+include "header.php";
+
+
+MustLogIn();
+
+
+//Fix some stuff
+if (""!=$Phone) { //Allow only numbers in phone number
+	$Phone=ereg_replace("[^0-9]","",$Phone);
+}
+if (""!=$Room) { //Allow only numbers in phone number
+	$Room=ereg_replace("[^0-9]","",$Room);
+}
+if (""!=$CID) { //Allow only numbers in phone number
+	$CID=ereg_replace("[^0-9]","",$CID);
+}
+
+?>
+<CENTER>
+<TABLE border=0 cellspacing=4 cellpadding=5>
+<FORM>
+<TR><TD bgcolor=<?=$color_table_title?> colspan=2><?=$ofont_title?>Look Up Person:<?=$cfont_title?></TD></TR>
+<TR><TD BGCOLOR=<?=$color_table_lt_bg?> valign=top>
+<TABLE border=0>
+<TR><TD align=right>Phone #:</TD><TD><INPUT TYPE=TEXT NAME="Phone" VALUE="<?echo $Phone; ?>"></TD></TR>
+<TR><TD colspan=2 align=center>-- AND/OR --</TD></TR>
+<TR><TD align=right>Building:</TD><TD>
+
+			<SELECT NAME="Building">
+			<OPTION VALUE=0>Any</OPTION>
+			<?
+			$y=mysql_query("Select Number,Name FROM Buildings ".(("N"==$userdata["IsIT"])?"WHERE ResidenceHall='Y'":"")."ORDER BY Name");
+			for ($i=0;$i<mysql_num_rows($y);$i++) { ?>
+			<OPTION VALUE="<? echo mysql_result($y,$i,0)."\""; if ($Building==mysql_result($y,$i,0)) {echo " SELECTED";} ?>>
+				<? echo mysql_result($y,$i,1); ?>
+			</OPTION>
+			<? } ?> 
+			</SELECT>
+
+</TD></TR>
+<TR><TD align=right>Room #:</TD><TD><INPUT TYPE=TEXT NAME="Room" VALUE="<?echo $Room; ?>"></TD></TR>
+<TR><TD valign=middle><B>Step 1:</B></TD><TD align=right><INPUT
+TYPE=SUBMIT
+NAME="Action" VALUE="Quick Search"></TD></TR>
+</TABLE></TD><TD BGCOLOR=<?=$color_table_lt_bg?> valign=top>
+<INPUT TYPE=HIDDEN NAME="SID" VALUE=<? echo $SID; ?>>
+<TABLE border=0>
+<TR><TD align=right>First Name:</TD><TD><INPUT TYPE=TEXT NAME="First" VALUE="<?echo stripslashes($First); ?>"></TD></TR>
+<TR><TD align=right>Last Name:</TD><TD><INPUT TYPE=TEXT NAME="Last" VALUE="<?echo stripslashes($Last); ?>"></TD></TR>
+<TR><TD align=center colspan=2>-- AND/OR --</TD></TR>
+<TR><TD align=right>Campus ID#:</TD><TD><INPUT TYPE=TEXT NAME="CID" VALUE="<?echo $CID; ?>"></TD></TR>
+<TR><TD valign=middle><B>Step 2:</B></TD><TD align=right><INPUT
+TYPE=SUBMIT NAME="Action" VALUE="Look Up"></TD></TR>
+</TABLE>
+</TD>
+</TR>
+</FORM>
+<TR><TD colspan=2 BGCOLOR=#<? echo $color_table_lt_bg;?> align=center valign=middle>
+
+<FORM ACTION="ticketstatus.php">
+<INPUT TYPE=HIDDEN NAME="SID" VALUE="<? echo $SID; ?>">
+<B>Load Ticket:</B>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ticket Number:&nbsp;&nbsp;<INPUT TYPE=TEXT SIZE=5 NAME="TID">&nbsp;&nbsp;<INPUT TYPE=SUBMIT VALUE="Load Ticket">
+</TD></TR>
+</FORM>
+</TABLE>
+</CENTER>
+<BR><BR>
+
+<?
+
+if ("Look Up"==$Action) {
+	MakeTable(mysql_query("SELECT CampusID, concat('clientinfo.php?CID=',CampusID) AS CIDHyperlink, First, Last FROM People WHERE CampusID>0 AND (".((0==$CID)?"":"CampusID=$CID OR ").(""==$Last?"First='$First'":"Last='$Last'").")"),1,1,1,3,"Matches for Look-up User (Step 3)");
+
+	?>
+	<BR><BR>
+	<!--Add User Information-->
+	<TABLE width=100% border=0 cellspacing=1 cellpadding=3>
+	<TR><TD BGCOLOR=<?=$color_table_title?>><?=$ofont_title?>Add Person to Database (only if
+<I>NOT</I>
+found by searching) (Alternate
+Step 3)<?=$cfont_title?></TD></TR>
+	<TR><TD BGCOLOR=<?=$color_table_lt_bg?> valign=top align=center>
+		<FORM action="clientinfo.php" METHOD=POST>
+		<INPUT TYPE=HIDDEN NAME="SID" VALUE=<? echo $SID;?>>
+		<INPUT TYPE=HIDDEN NAME="Room" VALUE=<? echo $Room;?>>
+		<INPUT TYPE=HIDDEN NAME="Building" VALUE=<? echo $Building;?>>
+		<INPUT TYPE=HIDDEN NAME="Phone" VALUE=<? echo $Phone;?>>
+		<TABLE border=0>
+		<TR><TD>First</TD><TD>Last</font></TD><TD>Campus ID#</TD><TD>Type</TD></TR>
+		<TR>
+			<TD><INPUT TYPE=TEXT SIZE=12 NAME=First VALUE="<? echo stripslashes($First); ?>"></TD>
+			<TD><INPUT TYPE=TEXT SIZE=20 NAME=Last VALUE="<? echo stripslashes($Last); ?>"></TD>
+			<TD><INPUT TYPE=TEXT SIZE=13 NAME=CID VALUE="<? echo $CID; ?>"></TD>
+			<TD><SELECT NAME="Role"><OPTION value=1>Student</OPTION><OPTION value=2>Faculty</OPTION><OPTION value=3>Both</OPTION></SELECT></TD>
+			<TD><INPUT TYPE=SUBMIT NAME="Action" VALUE="Add Person"></TD>
+		</TR>
+		</TABLE>
+		</FORM>
+	</TD></TR>
+	</TABLE>
+	<?
+} else if ("Quick Search"==$Action) {
+	MakeTable(mysql_query("SELECT Po.CampusID, concat('clientinfo.php?CID=',Po.CampusID) AS CIDHyperlink, Po.First, Po.Last FROM People AS Po,Phones as Ph WHERE Ph.CampusID=Po.CampusID AND ".($Phone==""?"1=0":"Ph.PhNum LIKE '%".(int)$Phone."'")),1,1,1,3,"Matches for Quick Search -- Phone");
+	?><BR><BR><?
+	MakeTable(mysql_query("SELECT Po.CampusID, concat('clientinfo.php?CID=',Po.CampusID) AS CIDHyperlink, Po.First, Po.Last FROM People AS Po,Rooms as Rm WHERE Rm.CampusID=Po.CampusID ".((0<$Building)?"AND Rm.Hall=$Building ":"")."AND Rm.RoomNumber=".(int)$Room),1,1,1,3,"Matches for Quick Search -- Room");
+
+} else {
+
+MakeTable(mysql_query("SELECT t1.TicketID AS TicketID,concat('ticketstatus.php?TID=',t1.TicketID) AS TicketPopup, t1.Comment AS Description, IF((t2.Appointment > DATE_SUB(NOW(), INTERVAL 1 DAY)) AND (t2.Appointment < DATE_ADD(NOW(), INTERVAL 1 DAY)), concat('A',t2.Appointment), concat('B',t2.Creation)) AS Hidden, concat(IF(LENGTH(p.Nick)>0,concat(p.Nick,' ',p.Last),concat(p.First,' ',p.Last)),IF((0!=t2.Appointment),concat('<BR>',t2.Appointment),'')) AS 'Assignment', t2.Creation AS 'Last Update' FROM PaperTrail as t1, PaperTrail as t2, People as p WHERE t1.TicketID=t2.TicketID AND t1.IsFirst='Y' AND t2.IsLast='Y' AND p.CampusID=t2.Receiver_CampusID AND t2.State='OPEN'".(($userdata["IsIT"]=="N")?" AND t2.Department='LINC'":(($userdata["IsLINC"]=="N")?" AND t2.Department='IT'":""))." ORDER BY Hidden"),1,1,1,3,"Open Call Tickets in your Department(s)");
+
+?><BR><BR><?
+
+//Phone #s of RCCs on Call
+
+$ourday=time()-18000; //Pretend it's 5hrs ago (to make the midnight crossing easier)
+$ourtime=date("H",$ourday)*4+(int)(date("i",$ourday)/15); //figure out the point in the day from 5am in 15 minute increments
+
+MakeTable(mysql_query("
+	SELECT
+		".sql_nick("People.First","People.Nick","People.Last")." AS 'Name',
+		".sql_phone("Phones.PhNum")." AS 'Phone',
+		Phones.Extra AS 'Extra Information'
+	FROM Phones, Schedule_Data, People
+	WHERE	Phones.CampusID=People.CampusID AND
+		People.CampusID=Schedule_Data.CampusID AND
+		Schedule_Data.Schedule=5 AND
+		Schedule_Data.Day=".date("w",$ourday)." AND
+		Schedule_Data.Time>=$ourtime AND
+		Schedule_Data.Time<=".($ourtime+3)."
+	GROUP BY Phones.PhNum
+
+"),1,1,1,3,"Phone #s of RCCs On Duty Now or in &lt; 1 hour");
+
+
+?><BR><BR><?
+
+
+MakeTable(mysql_query("SELECT t1.TicketID AS TicketID,concat('ticketstatus.php?TID=',t1.TicketID) AS TicketPopup, t1.Comment AS Description, IF((t2.Appointment > DATE_SUB(NOW(), INTERVAL 1 DAY)) AND (t2.Appointment < DATE_ADD(NOW(), INTERVAL 1 DAY)), concat('A',t2.Appointment), concat('B',t2.Creation)) AS Hidden, concat(IF(LENGTH(p.Nick)>0,concat(p.Nick,' ',p.Last),concat(p.First,' ',p.Last)),IF((0!=t2.Appointment),concat('<BR>',t2.Appointment),'')) AS 'Assignment', t2.Creation AS 'Last Update' FROM PaperTrail as t1, PaperTrail as t2, People as p WHERE t1.TicketID=t2.TicketID AND t1.IsFirst='Y' AND t2.IsLast='Y' AND p.CampusID=t2.Receiver_CampusID AND t2.State='ACTIVE'".(($userdata["IsIT"]=="N")?" AND t2.Department='LINC'":(($userdata["IsLINC"]=="N")?" AND t2.Department='IT'":""))." ORDER BY Hidden"),1,1,1,3,"ACTIVE Call Tickets in your Department(s)");
+
+
+
+?><P><P><P><P><font size=-1>Note: Residence Hall Service Desks are listed as room #0, and have their first name is the name of the building, and the last name is "Service Desk"<?
+
+}
+
+include "footer.php";
+db_logout($hdb);
+?>

@@ -1,0 +1,25 @@
+<?
+include "config.php";
+include "database.php";
+include "login.php";
+$title = "Help!";
+include "header.php";
+
+?>
+<table width=100%><TR><TD>
+<H2>On-line Documentation</H2></TD><TD align=right><img align=right src="/images/help.gif"></TD></TR>
+</TABLE>
+<BR>
+<UL>
+<LI><A HERF="help-general.php">General Information</A> Information on logging in, account settings, scheduling, etc.
+<LI><A HERF="help-general.php">General Information</A> Information on logging in, account settings, scheduling, etc.
+
+</UL>
+
+<?	
+
+include "footer.php";
+db_logout($hdb);
+
+
+?>

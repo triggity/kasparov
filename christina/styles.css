@@ -1,0 +1,18 @@
+﻿h1 
+{ 
+		font-size:250%; 
+}
+
+h2 
+{ 
+		font-size:150%;
+		
+ }
+
+#content
+{
+
+		background-image:url('Mission_Background_Small.jpg');
+		background-repeat:no-repeat;
+		background-position: right;
+}

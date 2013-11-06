@@ -1,0 +1,38 @@
+<?
+include "config.php";
+include "database.php";
+include "functions.php";
+
+include "login.php";
+
+$title ="Field Support Main";
+
+include "header.php";
+
+
+MustLogIn();
+
+MakeTable(mysql_query("SELECT t1.TicketID AS Ticket, concat('ticketstatus.php?TID=',t1.TicketID) AS TicketPopup, t1.Comment AS Description, IF(
+(t2.Appointment > DATE_SUB(NOW(), INTERVAL 1 DAY)) AND (t2.Appointment < DATE_ADD(NOW(), INTERVAL 1 DAY)), concat('A',t2.Appointment), concat('B',t2.Creation)) AS Hidden, IF(('0000-00-00 00:00:00'=t2.Appointment),'<CENTER>-</CENTER>',t2.Appointment) AS Appointment, t2.Creation AS 'Last Update' FROM PaperTrail as t1, PaperTrail as t2 WHERE t1.TicketID=t2.TicketID AND t1.IsFirst='Y' AND t2.IsLast='Y' AND t2.Receiver_CampusID=$CampusID AND t2.State='ACTIVE' ORDER BY Hidden"), 1, 1, 1, 3, "My Active Tickets");
+?>
+
+
+
+<BR><BR>
+<?
+MakeTable(mysql_query("SELECT t1.TicketID AS Ticket, concat('ticketstatus.php?TID=',t1.TicketID) AS TicketPopup, t1.Comment AS Description, IF(
+(t2.Appointment > DATE_SUB(NOW(), INTERVAL 1 DAY)) AND (t2.Appointment < DATE_ADD(NOW(), INTERVAL 1 DAY)), concat('A',t2.Appointment), concat('B',t2.Creation)) AS Hidden, IF(('0000-00-00 00:00:00'=t2.Appointment),'<CENTER>-</CENTER>',DATE_FORMAT(t2.Appointment,'%e %b \'%y - %l:%i%p')) AS Appointment, DATE_FORMAT(t2.Creation,'%e %b \'%y - %l:%i%p') AS 'Last Update' FROM PaperTrail as t1, PaperTrail as t2 WHERE t1.TicketID=t2.TicketID AND t1.IsFirst='Y' AND t2.IsLast='Y' AND t2.Receiver_CampusID=$CampusID AND t2.State='OPEN' ORDER BY Hidden"), 1, 1, 1, 3, "Open Tickets Assigned to You");
+?>
+
+
+<BR><BR>
+
+<?
+MakeTable(mysql_query("SELECT t1.TicketID AS Ticket, concat('ticketstatus.php?TID=',t1.TicketID) AS TicketPopup, t1.Comment AS Description, IF(
+(t2.Appointment > DATE_SUB(NOW(), INTERVAL 1 DAY)) AND (t2.Appointment < DATE_ADD(NOW(), INTERVAL 1 DAY)), concat('A',t2.Appointment), concat('B',t2.Creation)) AS Hidden, IF(('0000-00-00 00:00:00'=t2.Appointment),'<CENTER>-</CENTER>',t2.Appointment) AS Appointment, t2.Creation AS 'Last Update' FROM PaperTrail as t1, PaperTrail as t2 WHERE t1.TicketID=t2.TicketID AND t1.IsFirst='Y' AND t2.IsLast='Y' AND t2.Receiver_CampusID=0 AND t2.State='OPEN' ".(($userdata["IsIT"]=="N")?" AND t2.Department='LINC'":(($userdata["IsLINC"]=="N")?" AND t2.Department='IT'":""))." ORDER BY Hidden"), 1, 1, 1, 3, "Unassigned Open Tickets in Your Department");
+
+
+
+include "footer.php";
+db_logout($hdb);
+?>

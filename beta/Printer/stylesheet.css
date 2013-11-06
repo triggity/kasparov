@@ -1,0 +1,141 @@
+body {
+	font:"courier", "myriad", serif;
+	
+	background-color: #ebf0e0;
+	padding: 10px;
+	}
+	
+h1, h2, h3, h3, h4 {
+	color: #2a7bd7;
+	}
+
+h1 {
+	font-size: 200%;
+	}
+
+* {
+		margin: 0;
+		padding: 0;
+		}
+
+html {
+		font-size: 100%;
+		}
+
+body {
+		font: 62.5%/1.5 Verdana, Arial, Helvetica, sans-serif;
+		background-color: #ebf0e0;
+		}
+
+p {
+		font: 1.1em/1.4 Verdana, Arial, Helvetica, sans-serif;
+		margin-bottom: 1em;
+		}
+#thetop {
+	width: 740px;
+	margin: 0 auto;
+	text-align: center
+}
+
+/* ---------- add your code below ---------- */
+
+#wrapper {
+		width: 740px;
+		height: 800px;
+		margin: 0 auto;
+		
+	
+		}
+		
+#wrapper2 {
+		width: 800px;
+		margin: 0 auto;
+		background-color:green;
+
+		}
+
+#masthead {
+		padding-top: 20px;
+		
+		}
+
+#navContainer {
+		height: 30px;
+		border-bottom: 5px solid #ad3514;
+		}
+
+#content {
+		width: 740px;
+		padding: 10px;
+		background-color: #eeeeee;
+		
+		}
+
+#navigation ul {
+		list-style-type: none;
+		}
+
+#navigation li {
+		position: relative;
+		float: left;
+		background: url(css-tab-rollover-image.gif) no-repeat 0 0;
+		width: 185px;
+		height: 30px;
+		}
+
+#navigation a:link, #navigation a:visited {
+		font: bold 1.1em Arial, Helvetica, sans-serif;
+		text-transform: uppercase;
+		color: #ffffff;
+		text-decoration: none;
+		display: block;
+		height: 21px;
+		padding: 9px 0px 0px 30px;
+		}
+
+#navigation a:hover {
+		background: url(css-tab-rollover-image.gif) 0 -40px;
+		}
+
+#navigation a:active {
+		background: url(css-tab-rollover-image.gif) 0 -80px;
+		}
+#homePage #homePageLink a:link, #homePage #homePageLink a:visited, #servicesPage #servicesPageLink a:link, #servicesPage #servicesPageLink a:visited, #customerSupportPage #customerSupportPageLink a:link, #customerSupportPage #customerSupportPageLink a:visited, #contactDetailsPage #contactDetailsPageLink a:link, #contactDetailsPage #contactDetailsPageLink a:visited {
+		background: url(middle.gif) 0;
+		}
+		
+#navigation li ul {
+		border-top: 1px solid #668aff;
+		width: 185px;
+		position: absolute;
+		left: -10000px
+		}
+
+#navigation li:hover ul {
+		display: block;
+		left: 0;
+		}
+
+#navigation li li {
+		background: url(drop-down-menu-background.gif) repeat-y;
+		border-bottom: 1px solid #9ba29d;
+		}
+
+#navigation li li a:link, #navigation li li a:visited {
+		text-transform: none;
+		padding-left: 10px;
+		}
+
+#navigation li li a:hover, #navigation li li a:active {
+		background: none;
+		border-left: 5px solid #f7bc1d;
+		}
+
+#navigation li li a:active {
+		border-left-color: #4cbb59;
+		}
+		
+#homePage #homePageLink li li a:link, #homePage #homePageLink li li a:visited, #servicesPage #servicesPageLink li li a:link, #servicesPage #servicesPageLink li li a:visited, #customerSupportPage #customerSupportPageLink li li a:link, #customerSupportPage #customerSupportPageLink li li a:visited, #contactDetailsPage #contactDetailsPageLink li li a:link, #contactDetailsPage #contactDetailsPageLink li li a:visited, #chooser1 #chooser1links li li a:visited, #chooser2 #chooser2links li li a:visited, #LowerLevel #LowerLevellink li li a:visited, #1stFloor #1stFloorlink a:visited, #2ndFloor #2ndFloorlink li li a:visited, #3rdFloor #3rdFloorlink li li a:visited, #westside #westsidelink li li a:visited, #eastside #eastsidelink li li a:visited, #jrsr #jrsrlink li li a:visited {
+		background: none;
+		}
+	

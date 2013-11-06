@@ -1,0 +1,26 @@
+<?
+include "config.php";
+include "database.php";
+include "login.php";
+
+include "header.php";
+MustLogIn(0);
+
+$mode="Post";
+$news_boards=4;
+if ("Y"==$userdata["IsAdmin"]) {
+	$news_boards=28;
+} else if ("Y"==$userdata["IsHelpDesk"] || "Y"==$userdata["IsFieldSupport"])  {
+	$news_boards=8;
+} else if ("Y"==$userdata["IsTA"]) {
+	$news_boards=16;
+}
+
+include "news.php";
+	
+
+include "footer.php";
+db_logout($hdb);
+
+
+?>

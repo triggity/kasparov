@@ -1,0 +1,61 @@
+<?php
+include 'mycode/mydb_connect.php';
+echo "Process Form<br>";
+if ($_POST['submitted'] == 1) 
+{
+	$errormsg = ""; 
+	echo "Submit was successful<br>";
+	if ($_POST[count])
+	{
+		$count = $_POST[count]; //checks to see if count entered
+		echo "Count field was entered<br>";
+		if (!is_numeric($count) || $count < 1 || $count >= 99 ||$count != round($count))
+		{
+			//returns error if negative value, non-integer value, or >= 99
+			$errormsg = "Please enter valid submission";
+			echo $errormsg;
+		}
+		else 
+		{
+			echo "Valid Submission of: ";
+			echo $count;
+			echo "<br>";
+		}
+	}
+	else 
+	{
+		$errormsg = "Please enter valid number";
+		echo $errormsg;
+	}
+}
+//insert submission into table
+$q = "INSERT INTO test_table2(submission)  
+VALUES ('$_POST[count]')";
+if (!$q)
+{
+	exit ("<p>MySQL Insertion failure.</p>");
+}
+else 
+{
+	echo "Insertion success<br>";
+}
+if ($result = mysqli_query($cxn, "SELECT * FROM test_table2"))
+{
+		printf("Select returned %d rows from test_table2.\n", mysqli_num_rows($result));
+
+}
+else 
+{
+	echo "not executing mysql query";
+}
+echo "<table>";
+echo "<tr><td>submission</td></tr>";
+while ($row = mysqli_fetch_row($result))
+{
+	echo "<tr>";
+	echo "<td>$row[0]</td>";
+	echo "<td>$row[1]</td>";
+	echo "</tr>";
+}
+?>
+

@@ -1,0 +1,52 @@
+Show room mate(s) option on clientinfo page
+
+Warn user when trying to add time to a card that is past its due date.
+
+Get lab count graphs working
+
+Make sure overtime shows up properly on time cards
+
+Admin option for phone and room disassociation
+
+Fill in "Manage Schedules" page
+
+Fix "update" function in manage locations
+
+Delete Option for schedules, statistics, time cards, etc.
+
+new user templates
+
+Do we have your Request for service form?
+
+Messages:
+Message board admin?
+Option to receive new posts as E-Mails
+Field in "User" for their last visit
+
+Low Priority:
+
+ubersearch
+
+DB Changes:
+
+	Variable Departments (Tickets) / Positions (Scheduling)
+	Admins can only control depts that they are in & schedule for positions they
+	are marked as admins for / uberadmin can do anything.
+
+
+Rooms table: option for Roommate or past ticket at this location
+ +--option for helpdesk.php to find people in a given room.
+
+
+
+
+mark incorrect campus IDs as Void
+convention for 551 numbers - just enter extension
+should mark as "completed" and give Student TID# for calling back in "Will cann back" cases &
+then use force open feature to re-activate tickets
+...what to do when Router D blows up
+have non stanadrd problems helped via helpdesk in DB - i.e. not
+groupwise/netware
+disclaimer regarding contents of call yicket in display when shown when user looks up ticket.
+2000 != ME (2000 = a version on Win NT)
+don't re-enter computers - just UPDATE

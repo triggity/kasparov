@@ -1,0 +1,139 @@
+<?php
+
+include "config.php";
+include "database.php";
+include "functions.php";
+include "login.php";
+$title="Lab Counts";
+include "header.php";
+
+MustLogIn();
+?>
+
+<? if($counttime==""){ ?>
+<form action=LabCounts.php method=POST>
+
+<p>Please provide the following PC/MAC/Unix usage counts:
+<br>
+<br>
+Counts should be submitted every hour on the half hour.
+
+<table width=100%>
+<tr>
+	<td align=right>
+		Select  current  time:
+	</td>
+	<td align=left>
+		<select name="counttime">
+			<option value=073000>7:30AM</option>	
+			<option value=083000>8:30AM</option>
+			<option value=093000>9:30AM</option>
+			<option value=103000>10:30AM</option>
+			<option value=113000>11:30AM</option>
+			<option value=123000>12:30AM</option>
+			<option value=133000>1:30PM</option>
+			<option value=143000>2:30PM</option>
+			<option value=153000>3:30PM</option>
+			<option value=163000>4:30PM</option>
+			<option value=173000>5:30PM</option>
+			<option value=183000>6:30PM</option>
+			<option value=193000>7:30PM</option>
+			<option value=203000>8:30PM</option>
+			<option value=213000>9:30PM</option>
+			<option value=223000>10:30PM</option>
+			<option value=233000>11:30PM</option>
+			<option value=003000>12:30AM</option>
+			<option value=013000>1:30AM</option>
+	</select>
+	</td>
+	</tr>
+</table>	
+<table width=100%>
+<tr>
+  <td align=right>
+  Computer lab:
+  </td>
+  <td align=left>
+  <select name="Lab">
+	<option>KENNA</option>
+	<option>ORRADRE</option>
+	<option>SOBRATO</option>
+  </select>
+  </td>
+</tr>
+
+<tr>
+  <td align=right>
+  Computer Usage count:
+  </td>
+  <td align=left>
+  <input name="PC" type="text" size=5 maxlength=5>
+  </td>
+</tr>
+
+<tr>
+  <td align=right>
+  MAC Usage count:
+  </td>
+  <td align=left>
+  <input name="MAC" type="text" size=5 maxlength=5>
+  </td>
+</tr>
+
+<tr>
+  <td align=right>
+  Unix Usage count:
+  </td>
+  <td align=left>
+  <input name="UNIX" type="text" size=5 maxlength=5>
+  </td>
+</tr>
+
+</table>
+
+<br>
+<input type=submit value="Submit usage counts">
+<input type=reset value="Clear the information">
+<input type=hidden name=SID value=<? echo $SID; ?>>
+</form>
+
+<? } 
+else{
+	//If the time now is more than 30 minutes past the time submitted by the user
+	$now=mysql_result(mysql_query("SELECT DATE_FORMAT(NOW(), '%H%i%s')"),0,0);
+	
+	$t_date=mysql_result(mysql_query("SELECT DATE_FORMAT(NOW(), '%Y-%m-%d')"),0,0);	
+	
+	if(($now-3000) > $counttime){ ?>
+		<table>
+			<tr><td>It is more than 30 minutes past that time!</td></tr>
+		</table>
+	<? }
+	//Insert Here code to check if it is too early to enter ticket  
+
+	else{
+		$poo=mysql_query("SELECT CountID FROM LabCounts WHERE Time=$counttime AND Date='$t_date' AND Lab='$Lab' ");
+		$exist=mysql_num_rows($poo);
+		
+		if($exist >0){		?>
+			<table>
+				<tr><td>A Count for that time has already been entered!</td></tr>
+			</table> 	
+			   <? }
+	    	if($exist==0){
+	
+$ins=mysql_query("INSERT INTO LabCounts(Lab, Time, PC, MAC, UNIX, CampusID, Date) VALUES ('$Lab', $counttime, $PC, $MAC, $UNIX, $CampusID, now())");
+	   echo "	<table>
+			<tr><td>Thank you for submitting the lab counts!</td></tr>
+		</table>"; 	} ?>
+	
+		
+		<?
+	    }
+}
+
+
+include "footer.php";
+db_logout($hdb);
+
+?>

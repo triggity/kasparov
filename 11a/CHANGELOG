@@ -1,0 +1,28 @@
+v1.0
+---------------------
+* Original written by Ted Schundler. Thank you for this wonderful system!
+
+v1.0a
+---------------------
+* Quick changes before next version was completed
+ - Rearranged menu items on menu. Primary purpose was to move "Staff on duty" to top.
+ - Minor tweaks and bug fixes after realizing that turning on error reporting results in many errors
+
+v1.1 (Test version. Not publically released)
+---------------------
+* First modifications to the scheduling system to add an "absence" component
+ - Added absence tables to database (names not specified for security)
+ - Schedules.php: Added calendar view
+ - Schedules.php: Removed day selection buttons and moved them to calendar headers
+ - Schedules.php: Buton to view all days moved to link below calendar
+ - Added addabsence.php: Interface to add absence entry to database
+ - Added default.css: First stylesheet, mainly for calendar. (Sorry to whoever might edit this file. There are a lot of unused stuff.)
+
+v1.1a
+---------------------
+* Changes to absence system after testing and feedback
+ - Removed email alerts
+ - Schedules.php: Items on calendar are now green or red depending on their claim status
+ - Moved user and session info to newly added info bar at top of page below banner
+ - index.php: The user name box in now selected automatically when the page loads
+ - myinfo.php: Availability chart - Checkboxes for times when the library is closed are now disabled
