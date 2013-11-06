@@ -14,8 +14,8 @@ $admin_name = "Michael Miller";
 //general system database
 $database_url = "localhost";
 $database_name = "scu_tech_help";
-$database_uname = "stdsvc";
-$database_upass = "skippy4u";
+$database_uname = "fuck you";
+$database_upass = "motherfucker";
 
 //blueform database
 $forms_url = "129.210.9.248:3306";
