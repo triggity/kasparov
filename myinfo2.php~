@@ -418,7 +418,8 @@ if ("Update Schedule"==$Action) { //Are we updating the schedule?
 		}
 	}
 }
-
+if ("Clear Schedule"==$Action) { 
+}
 ?>
 
 
